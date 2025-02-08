@@ -52,6 +52,36 @@ require_once __DIR__ . '/vendor/autoload.php';
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.querySelector('.file-input');
+        const filePreview = document.querySelector('.file-preview');
+        const previewImg = document.getElementById('preview-img');
+        const removeBtn = document.querySelector('.remove-file');
+        const fileMessage = document.querySelector('.file-message');
+
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    filePreview.classList.remove('d-none');
+                    fileMessage.textContent = "Image selected";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removeBtn.addEventListener('click', function () {
+            fileInput.value = "";
+            filePreview.classList.add('d-none');
+            fileMessage.textContent = "or drag and drop here";
+        });
+    });
+</script>
+
 <style>
     .file-drop-area {
         position: relative;
