@@ -2,6 +2,15 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+session_start();
+
+$errors = $_SESSION['errors'] ?? ['sizes' => '', 'image' => ''];
+
+echo '<pre>';
+print_r($errors);
+echo '</pre>';
+
+unset($_SESSION['errors']);
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +24,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 <body class="bg-primary bg-gradient">
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card w-100 p-2 mx-auto bg-light shadow" style="max-width: 600px">
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="process.php" method="POST" enctype="multipart/form-data">
             <div class="card-header">
                 <h1 class="fs-2 text-center">Upload image</h1>
             </div>
@@ -30,21 +39,33 @@ require_once __DIR__ . '/vendor/autoload.php';
                     <img id="preview-img" src="" alt="Selected Image">
                     <span class="remove-file">✖</span>
                 </div>
+                <?php if ($errors['image']): ?>
+                    <div class="invalid-feedback d-block text-center mt-2" style="font-size: 12px;">
+                        <?= $errors['image'] ?>
+                    </div>
+                <?php endif; ?>
             </div>
 
-            <div class="resize-values mt-4 d-flex justify-content-center gap-2">
-                <div class="resize-value">
-                    <input type="checkbox" class="btn-check" id="size-200" name="sizes[]" value="200">
-                    <label class="btn btn-outline-primary" for="size-200" style="font-size: 10px;">200x200</label>
+            <div class="resize-values mt-4">
+                <div class="has-validation d-flex justify-content-center gap-2">
+                    <div class="resize-value">
+                        <input type="checkbox" class="btn-check" id="size-200" name="sizes[]" value="200">
+                        <label class="btn btn-outline-primary" for="size-200" style="font-size: 10px;">200x200</label>
+                    </div>
+                    <div class="resize-value">
+                        <input type="checkbox" class="btn-check" id="size-400" name="sizes[]" value="400">
+                        <label class="btn btn-outline-primary" for="size-400" style="font-size: 10px;">400x400</label>
+                    </div>
+                    <div class="resize-value">
+                        <input type="checkbox" class="btn-check" id="size-600" name="sizes[]" value="600">
+                        <label class="btn btn-outline-primary" for="size-600" style="font-size: 10px;">600x600</label>
+                    </div>
                 </div>
-                <div class="resize-value">
-                    <input type="checkbox" class="btn-check" id="size-400" name="sizes[]" value="400">
-                    <label class="btn btn-outline-primary" for="size-400" style="font-size: 10px;">400x400</label>
-                </div>
-                <div class="resize-value">
-                    <input type="checkbox" class="btn-check" id="size-600" name="sizes[]" value="600">
-                    <label class="btn btn-outline-primary" for="size-600" style="font-size: 10px;">600x600</label>
-                </div>
+                <?php if ($errors['sizes']): ?>
+                    <div class="invalid-feedback d-block text-center mt-2" style="font-size: 12px;">
+                        <?= $errors['sizes'] ?>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <button type="submit" class="btn btn-primary px-5 mt-4 mx-auto d-block">Resize</button>
@@ -97,9 +118,11 @@ require_once __DIR__ . '/vendor/autoload.php';
         cursor: pointer;
         transition: border-color 0.3s;
     }
+
     .file-drop-area:hover {
         border-color: #007bff;
     }
+
     .file-input {
         position: absolute;
         left: 0;
@@ -109,17 +132,20 @@ require_once __DIR__ . '/vendor/autoload.php';
         opacity: 0;
         cursor: pointer;
     }
+
     .file-preview {
         margin-top: 15px;
         display: flex;
         align-items: center;
         gap: 10px;
     }
+
     .file-preview img {
         max-width: 100px;
         border-radius: 5px;
         border: 1px solid #ddd;
     }
+
     .remove-file {
         cursor: pointer;
         color: red;
