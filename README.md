@@ -21,7 +21,7 @@ The application is built with **PHP 8.1**, uses **Imagine Library** for image pr
 1. Ensure that **Docker** and **Docker Compose** are installed.  
 2. Clone the repository:  
    ```bash
-   git clone https://github.com/your-repo/martinakopyan-phptodoapp.git
+   git clone git@github.com:MartinAkopyan/PHPImageResize.git
 3. Navigate to the project directory
    ```bash
    cd martinakopyan-phptodoapp
