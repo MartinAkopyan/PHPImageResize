@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
+
 use App\ImageResize;
 session_start();
 
@@ -8,9 +10,7 @@ $errors = [
     'image' => '',
 ];
 
-$sizes = $_POST['sizes'] ?? null;
-
-$allowedFormats = ['image/jpeg', 'image/png', 'image/webp'];
+$allowedFormats = ['image/jpeg', 'image/png'];
 $maxFileSize = 5 * 1024 * 1024;
 
 if (empty($_POST['sizes'])) {
@@ -52,7 +52,17 @@ if (isset($_FILES['image']) && $_FILES['image']['name']) {
     }
 }
 
-echo '<pre>';
-print_r($_FILES);
-print_r($sizes);
-echo '</pre>';
+$uploadDir = __DIR__ . '/images/';
+$sizes = $_POST['sizes'] ?? null;
+$file = $_FILES['image'] ?? null;
+$fileName = $file['name'];
+
+$resizer = new ImageResize();
+
+if ($sizes) {
+    foreach ($sizes as $size) {
+       $resizer->resizeImage($size, $file['tmp_name'], $uploadDir . "resize_{$size}x{$size}_" . $fileName);
+    }
+}
+
+header("Location: {$_SERVER['HTTP_REFERER']}");
