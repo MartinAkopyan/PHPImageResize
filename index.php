@@ -32,7 +32,7 @@ unset($_SESSION['errors']);
                 <div class="file-drop-area">
                     <span class="btn btn-outline-primary me-2">Choose image</span>
                     <span class="file-message text-muted">or drag and drop here</span>
-                    <input class="file-input" type="file" name="image" accept="image/*">
+                    <input class="file-input" type="file" name="image">
                 </div>
 
                 <div class="file-preview mt-3 d-none">
