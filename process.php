@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/helpers.php';
 
 use App\ImageResize;
+use App\ZipArchiver;
 session_start();
 
 $isValid = true;
@@ -61,8 +63,18 @@ $resizer = new ImageResize();
 
 if ($sizes) {
     foreach ($sizes as $size) {
-       $resizer->resizeImage($size, $file['tmp_name'], $uploadDir . "resize_{$size}x{$size}_" . $fileName);
+        $resizedImage = $uploadDir . "resize_{$size}x{$size}_" . $fileName;
+        $resizer->resizeImage($size, $_FILES['image']['tmp_name'], $resizedImage);
     }
 }
 
+try {
+    ZipArchiver::downloadZip($uploadDir, 'my_images.zip');
+    exit;
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
+
+
 header("Location: {$_SERVER['HTTP_REFERER']}");
+exit;

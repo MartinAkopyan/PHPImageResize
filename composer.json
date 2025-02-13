@@ -8,6 +8,7 @@
     "optimize-autoloader": true
   },
   "require": {
-    "imagine/imagine": "^1.5"
+    "imagine/imagine": "^1.5",
+    "ext-zip": "*"
   }
 }

@@ -6,9 +6,6 @@ session_start();
 
 $errors = $_SESSION['errors'] ?? ['sizes' => '', 'image' => ''];
 
-echo '<pre>';
-print_r($errors);
-echo '</pre>';
 
 unset($_SESSION['errors']);
 ?>
